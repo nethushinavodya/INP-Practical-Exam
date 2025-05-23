@@ -26,7 +26,5 @@
        <TextField fx:id="clientInputMsg" layoutX="28.0" layoutY="416.0" prefHeight="43.0" prefWidth="410.0" />
        <Button fx:id="sendMsg" layoutX="460.0" layoutY="416.0" mnemonicParsing="false" onAction="#btnSend" prefHeight="43.0" prefWidth="70.0" text="Send" />
        <Button fx:id="sendEmoji" layoutX="391.0" layoutY="416.0" mnemonicParsing="false" onAction="#btnSendEmoji" prefHeight="43.0" prefWidth="46.0" text="😊" />
-       <Button fx:id="sendImage" layoutX="551.0" layoutY="416.0" mnemonicParsing="false" onAction="#btnSendImage" prefHeight="43.0" prefWidth="70.0" text="Image" />
-
    </children>
 </AnchorPane>

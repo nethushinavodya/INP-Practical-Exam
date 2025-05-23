@@ -23,7 +23,6 @@ public class ServerController {
     public Button sendMsg;
     public TextField serverInputMsg;
     public Button sendEmoji;
-    public Button sendImage;
     public VBox ServerTextArea;
     public ScrollPane scrollPane;
 
@@ -64,7 +63,7 @@ public class ServerController {
         }).start();
     }
 
-   //display message on server side
+    //display message on server side
     public void appendMsg(String text) {
         Platform.runLater(() -> {
             Label label = new Label(text);
@@ -95,29 +94,6 @@ public class ServerController {
         }
     }
 
-    public void btnSendImage(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.txt", "*.doc", "*.docx")
-        );
-        File file = fileChooser.showOpenDialog(null);
-
-        if (file != null) {
-            String fileName = file.getName();
-            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if (extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpeg") ||
-                    extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("gif")) {
-                displayImage(file.getPath());
-                broadcastImage(file.getPath(), "Server");
-                appendMsg("Server sent an image");
-            } else if (extension.equalsIgnoreCase("txt") || extension.equalsIgnoreCase("doc") ||
-                    extension.equalsIgnoreCase("docx")) {
-                broadcastFile(file.getPath(), "Server");
-                appendMsg("Server sent a file: " + fileName);
-            }
-        }
-    }
-
     public void btnSendEmoji(ActionEvent actionEvent) {
         String emojis = "😀";
         broadcastMessage("Server: " + emojis);
@@ -145,6 +121,26 @@ public class ServerController {
     public void removeClient(ClientHandler clientHandler) {
         clients.remove(clientHandler);
         appendMsg(clientHandler.getClientId() + " disconnected. Total clients: " + clients.size());
+    }
+
+    // Method to handle special server commands
+    private void handleServerCommand(String command, ClientHandler requestingClient) {
+        String response = "";
+
+        if (command.equalsIgnoreCase("time")) {
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            response = "Server: Current time is " + timeFormat.format(new Date());
+        } else if (command.equalsIgnoreCase("date")) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            response = "Server: Current date is " + dateFormat.format(new Date());
+        }
+
+        if (!response.isEmpty()) {
+            // Send response back to the requesting client
+            requestingClient.sendMessage(response);
+            // Also display on server side
+            appendMsg("Server responded to " + requestingClient.getClientId() + " with: " + response);
+        }
     }
 
     private class ClientHandler implements Runnable {
@@ -202,12 +198,22 @@ public class ServerController {
                             }
                         }
                     } else {
-                        String formattedMessage = clientId + ": " + message;
-                        Platform.runLater(() -> appendMsg(formattedMessage));
+                        // Check if message is a server command (time or date)
+                        if (message.equalsIgnoreCase("time") || message.equalsIgnoreCase("date")) {
+                            // Handle server command
+                            server.handleServerCommand(message, this);
+                            // Still display the original message on server
+                            String formattedMessage = clientId + ": " + message;
+                            Platform.runLater(() -> appendMsg(formattedMessage));
+                        } else {
+                            // Regular message handling
+                            String formattedMessage = clientId + ": " + message;
+                            Platform.runLater(() -> appendMsg(formattedMessage));
 
-                        for (ClientHandler client : clients) {
-                            if (client != this) {
-                                client.sendMessage(formattedMessage);
+                            for (ClientHandler client : clients) {
+                                if (client != this) {
+                                    client.sendMessage(formattedMessage);
+                                }
                             }
                         }
                     }
