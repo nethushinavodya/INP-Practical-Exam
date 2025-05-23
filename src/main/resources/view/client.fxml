@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="492.0" prefWidth="655.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.ClientController">
+   <children>
+      <Label layoutX="278.0" layoutY="14.0" prefHeight="66.0" prefWidth="99.0" text="Client " textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="33.0" />
+         </font>
+      </Label>
+      <VBox fx:id="ClientTextArea" layoutX="28.0" layoutY="80.0" prefHeight="309.0" prefWidth="593.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <ScrollPane fx:id="ScrollPane" prefHeight="312.0" prefWidth="594.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+              </content>
+            </ScrollPane>
+         </children></VBox>
+       <TextField fx:id="clientInputMsg" layoutX="28.0" layoutY="416.0" prefHeight="43.0" prefWidth="410.0" />
+       <Button fx:id="sendMsg" layoutX="460.0" layoutY="416.0" mnemonicParsing="false" onAction="#btnSend" prefHeight="43.0" prefWidth="70.0" text="Send" />
+       <Button fx:id="sendEmoji" layoutX="391.0" layoutY="416.0" mnemonicParsing="false" onAction="#btnSendEmoji" prefHeight="43.0" prefWidth="46.0" text="😊" />
+       <Button fx:id="sendImage" layoutX="551.0" layoutY="416.0" mnemonicParsing="false" onAction="#btnSendImage" prefHeight="43.0" prefWidth="70.0" text="Image" />
+
+   </children>
+</AnchorPane>
