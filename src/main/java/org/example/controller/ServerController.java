@@ -106,17 +106,6 @@ public class ServerController {
         }
     }
 
-    public void broadcastImage(String imagePath, String sender) {
-        for (ClientHandler client : clients) {
-            client.sendImage(imagePath, sender);
-        }
-    }
-
-    public void broadcastFile(String filePath, String sender) {
-        for (ClientHandler client : clients) {
-            client.sendFile(filePath, sender);
-        }
-    }
 
     public void removeClient(ClientHandler clientHandler) {
         clients.remove(clientHandler);
